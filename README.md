@@ -1,111 +1,76 @@
 # ML Trading on Databricks
 
-A personal research project for building, backtesting, and deploying machine learning–driven trading strategies on Databricks.
+This repository contains a small, end-to-end workflow for experimenting with **machine learning-based trading strategies** on **Databricks**.  
+It is organized around a couple of key notebooks that walk from raw market data and feature engineering through model training and backtesting, with optional experiment tracking.
 
----
+## Project Structure
 
-## 📌 Overview
+- `ml_trading_01_data_and_features.ipynb`
 
-This project explores how to use Databricks as an end‑to‑end platform for:
+  - Load and clean historical market data
+  - Engineer predictive features (e.g. returns, technical indicators, factors)
+  - Persist prepared feature tables for downstream modeling
 
-- Ingesting and cleaning market data
-- Engineering predictive features
-- Training and evaluating ML models for trading signals
-- Backtesting strategies with realistic assumptions (slippage, transaction costs, etc.)
-- Packaging code and notebooks so ideas are reproducible and shareable
+- `ml_trading_02_model_and_backtest.ipynb`
 
----
+  - Train ML models (e.g. for predicting returns or direction)
+  - Evaluate model performance and build basic backtests
+  - Analyze strategy metrics (e.g. hit rate, PnL curves, drawdowns)
 
-## ✨ Key Ideas & Features
+- `experiments/factor_models_mlflow.py.ipynb`
+  - Prototype and compare different factor/feature sets
+  - Track experiment metadata and metrics with MLflow (if enabled in your workspace)
 
-- **End‑to‑end ML trading workflow**: From raw data to signals, backtests, and performance analysis.
-- **Databricks‑first design**: Uses notebooks and Python modules structured for Databricks jobs / repos.
-- **Extendable**: Easy to plug in new assets, features, or model types as you iterate on strategies.
+You can adapt or extend these notebooks to plug into your own data sources and production pipelines.
 
-## 🗂 Project Structure
+## Prerequisites
 
-The high‑level layout of the repo is:
+- A **Databricks workspace** (or a local environment with the Databricks Runtime / `databricks-connect` configured)
+- **Python 3.9+** recommended
+- Typical Python data/ML libraries, for example:
+  - `pandas`, `numpy`
+  - `scikit-learn`
+  - `matplotlib` or `plotly`
+  - `mlflow` (for experiment tracking)
 
-- **`notebooks/`**  
-  Interactive Databricks notebooks for:
+> Note: The exact dependency set will depend on how you extend the notebooks. Install or pin versions according to your environment standards.
 
-  - Exploratory data analysis (EDA)
-  - Feature engineering
-  - Model training experiments
-  - Backtesting and performance visualization
-
-- **`src/`**  
-  Re‑usable Python modules, for example:
-  - `data/` – data loading, cleaning, and transformations
-  - `features/` – feature engineering functions
-  - `models/` – model definitions, training loops, and evaluation helpers
-  - `backtests/` – portfolio / strategy backtest utilities
-  - `utils/` – shared helpers, configuration, logging, etc.
-
-## 🚀 Getting Started (Locally)
-
-This project can be run entirely inside Databricks or developed locally and synced to Databricks repos. A simple local flow:
+## Getting Started
 
 1. **Clone the repository**
 
    ```bash
-   git clone https://github.com/<your-username>/ml-trading-databricks.git
+   git clone <YOUR-REPO-URL> ml-trading-databricks
    cd ml-trading-databricks
    ```
 
-2. **Create and activate a virtual environment (recommended)**
+2. **Create and activate a virtual environment (optional but recommended)**
 
    ```bash
    python -m venv .venv
-   source .venv/bin/activate  # on macOS / Linux
-   # .venv\Scripts\activate   # on Windows (PowerShell)
+   source .venv/bin/activate  # On Windows: .venv\Scripts\activate
    ```
 
 3. **Install dependencies**
-
-   After you define your dependencies in `requirements.txt`, install them with:
+   Install the libraries you plan to use (example):
 
    ```bash
-   pip install -r requirements.txt
+   pip install pandas numpy scikit-learn matplotlib mlflow
    ```
 
-4. **Work with notebooks**
+4. **Connect to Databricks**
 
-   - You can open notebooks locally using VS Code / Jupyter, or
-   - Use Databricks Repos to sync this repository and run `notebooks/` directly in your Databricks workspace.
+   - Either upload/import the notebooks into your Databricks workspace and attach them to a cluster
+   - Or configure `databricks-connect` locally so that the notebooks can talk to a remote cluster
 
----
+5. **Run the notebooks**
+   - Start with `ml_trading_01_data_and_features.ipynb` to build your feature set
+   - Then open `ml_trading_02_model_and_backtest.ipynb` to train models and run backtests
+   - Use `experiments/factor_models_mlflow.py.ipynb` for more advanced experimentation and tracking
 
-## 💻 Using Databricks
+## Customization Ideas
 
-Typical ways to use this repo with Databricks:
-
-- **Databricks Repos**:
-
-  - Connect this GitHub repo to Databricks Repos.
-  - Develop notebooks in `notebooks/` and Python modules in `src/`.
-  - Commit and sync changes back to GitHub so your portfolio stays up to date.
-
-- **Jobs / Workflows**:
-  - Convert key notebooks into scheduled jobs (e.g., daily data refresh, model retrain, or backtest runs).
-
-## 🧭 Roadmap
-
-Planned next steps for this project:
-
-- [ ] Set up core data ingestion pipeline
-- [ ] Implement baseline trading strategy & backtest
-- [ ] Add feature engineering and ML models
-- [ ] Track experiments and metrics more systematically
-- [ ] Package re‑usable utilities in `src/`
-
----
-
-## 🤝 Contributing / Personal Note
-
-This is primarily a **personal research and learning project**, but:
-
-- You’re welcome to open issues or suggestions if you’re curious about the approach.
-- If you’re a recruiter, collaborator, or fellow quant/ML engineer, this repo is meant to give you a window into how I structure and think about ML trading workflows.
-
-If you like this project, you can ⭐ the repo or reach out via the contact information listed on my personal website.
+- Swap in your own **data source** (e.g. Delta tables, Parquet files, or a data warehouse)
+- Try different **feature sets** (technical indicators, fundamental signals, alternative data)
+- Experiment with **model families** (gradient boosting, random forests, neural networks)
+- Enhance the **backtest engine** (transaction costs, slippage, position sizing rules, risk limits)
